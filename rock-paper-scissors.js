@@ -38,3 +38,34 @@ function getComputerChoice() {
 
 console.log(getComputerChoice());
 
+/* Human Choice
+ask user what they would like to pick between rock paper and scissors
+choice is recorded
+check if the choice is a valid response
+if so then the choice is returned
+if not then ask again
+*/
+
+function getHumanChoice() {
+    let choice;
+    let valid;
+    while (!valid) {
+        try {
+            choice = prompt('What would you like to play? ( Rock | Paper | Scissors ): ');
+            switch (choice) {
+                case 'Rock':
+                case 'Paper':
+                case 'Scissors':
+                    valid = true;
+                    break
+                default:
+                    throw new Error('Option not an available choice!');
+            }
+        } catch (e) {
+            console.warn(e);
+        }
+    }
+    return choice;
+}
+
+console.log(getHumanChoice());
