@@ -31,12 +31,10 @@ function getComputerChoice() {
             break
         default:
             console.warn('Computer Choice not in expected scope');
-            choice = 'Rock';
+            choice = 'ROCK';
     }
     return choice;
 }
-
-console.log(getComputerChoice());
 
 /* Human Choice
 ask user what they would like to pick between rock paper and scissors
@@ -51,7 +49,7 @@ function getHumanChoice() {
     let valid;
     while (!valid) {
         try {
-            choice = prompt('What would you like to play? ( Rock | Paper | Scissors ): ').toUpperCase();
+            choice = prompt('What would you like to play? ( ROCK | PAPER | SCISSORS ): ').toUpperCase();
             switch (choice) {
                 case 'ROCK':
                 case 'PAPER':
@@ -68,11 +66,40 @@ function getHumanChoice() {
     return choice;
 }
 
-console.log(getHumanChoice());
-
 /* Play one round
 takes in the human and computer choice as parameters
+compare the human and computer choice
+display a winner message if human beats computer
+otherwise display a loser message
 */
+
+function playRound(humanChoice,computerChoice) {
+    if (humanChoice === 'ROCK' && computerChoice === 'PAPER') {
+        console.log('You lose! PAPER beats ROCK');
+        compupterScore++;
+    } else if (humanChoice === 'PAPER' && computerChoice === 'SCISSORS') {
+        console.log('You lose! PAPER beats ROCK');
+        computerScore++;
+    } else if (humanChoice === 'SCISSORS' && computerChoice === 'ROCK') {
+        console.log('You lose! SCISSORS beats PAPER');
+        computerScore++;
+    } else if (humanChoice === 'ROCK' && computerChoice === 'SCISSORS') {
+        console.log('You win! ROCK beats Sciccors');
+        humanScore++;
+    } else if (humanChoice === 'PAPER' && computerChoice === 'ROCK') {
+        console.log('You win! PAPER beats ROCK');
+        humanScore++;
+    } else if (humanChoice === 'SCISSORS' && computerChoice === 'PAPER') {
+        console.log('You win! SCISSORS beats PAPER');
+        humanScore++;
+    } else {
+        console.log(`You drew! both of you picked ${humanChoice}`);
+    }
+}
 
 let humanScore = 0;
 let computerScore = 0;
+
+playRound(getHumanChoice(),getComputerChoice());
+console.log(humanScore);
+console.log(computerScore);
