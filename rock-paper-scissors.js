@@ -21,13 +21,13 @@ function getComputerChoice() {
     let choice;
     switch (randNum) {
         case 0:
-            choice = 'Rock';
+            choice = 'ROCK';
             break;
         case 1:
-            choice = 'Paper';
+            choice = 'PAPER';
             break;
         case 2:
-            choice = 'Scissors';
+            choice = 'SCISSORS';
             break
         default:
             console.warn('Computer Choice not in expected scope');
@@ -51,11 +51,11 @@ function getHumanChoice() {
     let valid;
     while (!valid) {
         try {
-            choice = prompt('What would you like to play? ( Rock | Paper | Scissors ): ');
+            choice = prompt('What would you like to play? ( Rock | Paper | Scissors ): ').toUpperCase();
             switch (choice) {
-                case 'Rock':
-                case 'Paper':
-                case 'Scissors':
+                case 'ROCK':
+                case 'PAPER':
+                case 'SCISSORS':
                     valid = true;
                     break
                 default:
@@ -69,6 +69,10 @@ function getHumanChoice() {
 }
 
 console.log(getHumanChoice());
+
+/* Play one round
+takes in the human and computer choice as parameters
+*/
 
 let humanScore = 0;
 let computerScore = 0;
