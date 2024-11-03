@@ -1,13 +1,3 @@
-/* game
-round start
-ask player for their choice
-get computer choice
-compare results
-display winner
-round end
-start next round
-*/
-
 /* Computer Choice 
 Generate a random number between 1 and 3
 check the number 
@@ -74,32 +64,63 @@ otherwise display a loser message
 */
 
 function playRound(humanChoice,computerChoice) {
+    let winner;
     if (humanChoice === 'ROCK' && computerChoice === 'PAPER') {
         console.log('You lose! PAPER beats ROCK');
-        compupterScore++;
+        winner = 'Computer'
     } else if (humanChoice === 'PAPER' && computerChoice === 'SCISSORS') {
         console.log('You lose! PAPER beats ROCK');
-        computerScore++;
+        winner = 'Computer'
     } else if (humanChoice === 'SCISSORS' && computerChoice === 'ROCK') {
         console.log('You lose! SCISSORS beats PAPER');
-        computerScore++;
+        winner = 'Computer'
     } else if (humanChoice === 'ROCK' && computerChoice === 'SCISSORS') {
         console.log('You win! ROCK beats Sciccors');
-        humanScore++;
+        winner = 'Human'
     } else if (humanChoice === 'PAPER' && computerChoice === 'ROCK') {
         console.log('You win! PAPER beats ROCK');
-        humanScore++;
+        winner = 'Human'
     } else if (humanChoice === 'SCISSORS' && computerChoice === 'PAPER') {
         console.log('You win! SCISSORS beats PAPER');
-        humanScore++;
+        winner = 'Human'
     } else {
         console.log(`You drew! both of you picked ${humanChoice}`);
     }
+    return winner
 }
 
-let humanScore = 0;
-let computerScore = 0;
+/* Play game
+Plays 5 rounds of rock paper scissors
+each round gets a new choice from human and computer
+plays round and allocates point to the winner
+after five rounds, player with higher score wins */
 
-playRound(getHumanChoice(),getComputerChoice());
-console.log(humanScore);
-console.log(computerScore);
+function playGame() {
+    let humanScore = 0;
+    let computerScore = 0;
+    let roundWinner;
+
+    for (let round = 1; round < 6; round++) {
+        console.log(`Round ${round}`);
+        let humanSelection = getHumanChoice();
+        let computerSelection = getComputerChoice();    
+        roundWinner = playRound(humanSelection,computerSelection);
+        switch (roundWinner) {
+            case 'Human':
+                humanScore++
+                break
+            case 'Computer':
+                computerScore++
+                break
+        }
+    }
+    if (humanScore === computerScore) {
+        console.log(`It's a Draw! both players are tied with ${humanScore} points each`);
+    } else if (humanScore>computerScore) {
+        console.log(`Human wins! ${humanScore} wins out of 5`);
+    } else {
+        console.log(`Computer wins! ${computerScore} wins out of 5`);
+    }
+}
+
+playGame();
