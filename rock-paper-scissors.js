@@ -1,126 +1,104 @@
-/* Computer Choice 
-Generate a random number between 1 and 3
-check the number 
-if number is 0 then choose rock
-if number is 1 then choose paper
-if number is 2 then choose scissors
-return respective action
-*/
+let roundTitle = document.querySelector('#round');
+let hScoreDisplay = document.querySelector('#human-score');
+let cScoreDisplay = document.querySelector('#computer-score');
+let roundResult = document.querySelector('#result');
+const choiceButtons = document.querySelector('#choices');
+const resetButton = document.querySelector('#reset');
+
+let currentRound = 1;
+let humanScore = 0;
+let computerScore = 0;
+
+choiceButtons.addEventListener('click', (e) => {
+    let target = e.target;
+    if (humanScore >= 5 || computerScore >= 5) {
+        return
+    } else {
+        playGame(target.id);
+    }
+})
+
+resetButton.addEventListener('click',() => {
+    currentRound = 1;
+    humanScore = 0;
+    computerScore = 0;
+    hScoreDisplay.textContent = `Human Score: ${humanScore}`;
+    cScoreDisplay.textContent = `Computer Score: ${computerScore}`;
+    roundTitle.textContent = `Round ${currentRound}!`;
+})
+
 function getComputerChoice() {
     let randNum = Math.floor(Math.random()*3);
     let choice;
     switch (randNum) {
         case 0:
-            choice = 'ROCK';
+            choice = 'rock';
             break;
         case 1:
-            choice = 'PAPER';
+            choice = 'paper';
             break;
         case 2:
-            choice = 'SCISSORS';
+            choice = 'scissors';
             break
         default:
             console.warn('Computer Choice not in expected scope');
-            choice = 'ROCK';
+            choice = 'rock';
     }
     return choice;
 }
-
-/* Human Choice
-ask user what they would like to pick between rock paper and scissors
-choice is recorded
-check if the choice is a valid response
-if so then the choice is returned
-if not then ask again
-*/
-
-function getHumanChoice() {
-    let choice;
-    let valid;
-    while (!valid) {
-        try {
-            choice = prompt('What would you like to play? ( ROCK | PAPER | SCISSORS ): ').toUpperCase();
-            switch (choice) {
-                case 'ROCK':
-                case 'PAPER':
-                case 'SCISSORS':
-                    valid = true;
-                    break
-                default:
-                    throw new Error('Option not an available choice!');
-            }
-        } catch (e) {
-            console.warn(e);
-        }
-    }
-    return choice;
-}
-
-/* Play one round
-takes in the human and computer choice as parameters
-compare the human and computer choice
-display a winner message if human beats computer
-otherwise display a loser message
-*/
 
 function playRound(humanChoice,computerChoice) {
     let winner;
-    if (humanChoice === 'ROCK' && computerChoice === 'PAPER') {
-        console.log('You lose! PAPER beats ROCK');
+    if (humanChoice === 'rock' && computerChoice === 'paper') {
+        roundResult.textContent = 'You lose! paper beats rock';
         winner = 'Computer'
-    } else if (humanChoice === 'PAPER' && computerChoice === 'SCISSORS') {
-        console.log('You lose! PAPER beats ROCK');
+    } else if (humanChoice === 'paper' && computerChoice === 'scissors') {
+        roundResult.textContent ='You lose! paper beats rock';
         winner = 'Computer'
-    } else if (humanChoice === 'SCISSORS' && computerChoice === 'ROCK') {
-        console.log('You lose! SCISSORS beats PAPER');
+    } else if (humanChoice === 'scissors' && computerChoice === 'rock') {
+        roundResult.textContent ='You lose! scissors beats paper';
         winner = 'Computer'
-    } else if (humanChoice === 'ROCK' && computerChoice === 'SCISSORS') {
-        console.log('You win! ROCK beats Sciccors');
+    } else if (humanChoice === 'rock' && computerChoice === 'scissors') {
+        roundResult.textContent ='You win! rock beats Sciccors';
         winner = 'Human'
-    } else if (humanChoice === 'PAPER' && computerChoice === 'ROCK') {
-        console.log('You win! PAPER beats ROCK');
+    } else if (humanChoice === 'paper' && computerChoice === 'rock') {
+        roundResult.textContent ='You win! paper beats rock';
         winner = 'Human'
-    } else if (humanChoice === 'SCISSORS' && computerChoice === 'PAPER') {
-        console.log('You win! SCISSORS beats PAPER');
+    } else if (humanChoice === 'scissors' && computerChoice === 'paper') {
+        roundResult.textContent ='You win! scissors beats paper';
         winner = 'Human'
     } else {
-        console.log(`You drew! both of you picked ${humanChoice}`);
+        result.textContent =`You drew! both of you picked ${humanChoice}`;
     }
     return winner
 }
 
-/* Play game
-Plays 5 rounds of rock paper scissors
-each round gets a new choice from human and computer
-plays round and allocates point to the winner
-after five rounds, player with higher score wins */
-
-function playGame() {
-    let humanScore = 0;
-    let computerScore = 0;
-    let roundWinner;
-
-    for (let round = 1; round < 6; round++) {
-        console.log(`Round ${round}`);
-        let humanSelection = getHumanChoice();
-        let computerSelection = getComputerChoice();    
-        roundWinner = playRound(humanSelection,computerSelection);
-        switch (roundWinner) {
-            case 'Human':
-                humanScore++
-                break
-            case 'Computer':
-                computerScore++
-                break
-        }
-    }
-    if (humanScore === computerScore) {
-        console.log(`It's a Draw! both players are tied with ${humanScore} points each`);
-    } else if (humanScore>computerScore) {
-        console.log(`Human wins! ${humanScore} wins out of 5`);
+function displayWinner(humanScore,computerScore) {
+    if (humanScore>=5) {
+        roundTitle.textContent = 'WINNER!';
+        alert(`Human wins! ${humanScore} to ${computerScore}`);
+    } else if (computerScore>=5) {
+        roundTitle.textContent = 'LOSER!';
+        alert(`Computer wins! ${computerScore} to ${humanScore}`);
     } else {
-        console.log(`Computer wins! ${computerScore} wins out of 5`);
+        return;
     }
 }
 
-playGame();
+function playGame(playerSelection) {
+    const computerSelection = getComputerChoice();
+    let roundWinner = playRound(playerSelection,computerSelection);
+    switch (roundWinner) {
+        case 'Human':
+            humanScore++;
+            hScoreDisplay.textContent = `Human Score: ${humanScore}`;
+            break
+        case 'Computer':
+            computerScore++;
+            cScoreDisplay.textContent = `Computer Score: ${computerScore}`;
+            break
+    }
+    currentRound++
+    roundTitle.textContent = `Round ${currentRound}!`;
+    displayWinner(humanScore,computerScore);
+}
